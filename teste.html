@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Xview.View2.Pages.InitPage">
+    <ContentPage.Content>
+        <AbsoluteLayout>
+
+            <!-- INI background -->
+            <AbsoluteLayout AbsoluteLayout.LayoutBounds="0,0,1,1" BackgroundColor="#24726d" AbsoluteLayout.LayoutFlags="All">
+                <Image AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+                    Aspect="Fill" Source="fundo.png" BackgroundColor="#24726d">
+                </Image>
+            </AbsoluteLayout>
+            <!-- END background -->
+
+            <ScrollView x:Name="pgForms" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+
+
+                <StackLayout Padding="30,50" VerticalOptions="FillAndExpand">
+
+                    <StackLayout x:Name="pgMain" VerticalOptions="CenterAndExpand">
+
+                        <Image Source="wisefield.png" VerticalOptions="Center" HeightRequest="43" />
+
+                        <Label Text="ver 3.0.0" TextColor="Navy" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"
+                            Margin="0,0,0,10" FontSize="10" />
+
+                        <Image x:Name="pgPhoto" Margin="0,0,0,10" VerticalOptions="Center" HorizontalOptions="Center" Source="avatar.png" Aspect="AspectFit"
+                            WidthRequest="120" HeightRequest="120">
+
+                        </Image>
+
+
+                        <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" x:Name="pgNome" Text="Nome do Fulanao" FontSize="18"
+                            TextColor="White" />
+
+
+
+                        <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="0,0,0,10" x:Name="pgCompany" Text="Compania do Empresa"
+                            FontSize="15" TextColor="Silver" />
+
+
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="100" />
+                                <RowDefinition Height="100" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackLayout Grid.Row="0" Grid.Column="0" BackgroundColor="Blue">
+                            </StackLayout>
+
+                            <StackLayout Grid.Row="0" Grid.Column="1" BackgroundColor="Red">
+                            </StackLayout>
+                            <StackLayout Grid.Row="1" Grid.Column="0" BackgroundColor="Green">
+                            </StackLayout>
+
+                            <StackLayout Grid.Row="1" Grid.Column="1" BackgroundColor="Navy">
+                            </StackLayout>
+
+
+
+
+                        </Grid>
+
+                        <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" x:Name="pgSerialDevice" Text="SDSDF34DF3" FontSize="10"
+                            TextColor="White" />
+
+                    </StackLayout>
+
+
+
+                </StackLayout>
+            </ScrollView>
+            <!-- INI aviso -->
+            <AbsoluteLayout x:Name="pgLoader" IsVisible="false" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <StackLayout Opacity=".7" BackgroundColor="Black" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All"></StackLayout>
+                <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                    <ActivityIndicator VerticalOptions="CenterAndExpand" HorizontalOptions="Center" IsVisible="true" IsRunning="true" Color="Gray"
+                    />
+                </StackLayout>
+            </AbsoluteLayout>
+            <!-- END aviso -->
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

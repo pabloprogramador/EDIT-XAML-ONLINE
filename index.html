@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <script src="node_modules/codemirror/lib/codemirror.js"></script>
+    <script src="node_modules/codemirror/mode/xml/xml.js"></script>
+    <script src="node_modules/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="node_modules/codemirror/theme/monokai.css">
+    <script src="node_modules/codemirror/mode/javascript/javascript.js"></script>
+
+    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .CodeMirror{
+        top:58px;
+    }
+</style>
+    
+
+</head>
+<body>
+        <button id="btcodigo" onclick="abreCodigo();" style="position: absolute; left:400px; z-index: 9999999;">Código</button> 
+        <button id="save" onclick="salvarCodigo();" style="display: none; position: absolute; left:400px; z-index: 9999999;">Salvar</button>
+    <textarea id="codigo" style="display: none; position: absolute; z-index: 9999999; top:50px; width: 500px; height: 580px;">
+<ContentView
+xmlns="http://xamarin.com/schemas/2014/forms"
+xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<AbsoluteLayout>
+<StackLayout BackgroundColor="Black" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+<Label Text="Hello World" TextColor="White" />
+
+</StackLayout>
+</AbsoluteLayout>
+</ContentView>
+    </textarea>
+    
+    <div id="ooui-body" class="container-fluid">
+        <p id="loading"><i class="fa fa-refresh fa-spin" style="font-size:14px;margin-right:0.5em;"></i> Loading...</p>
+    </div>
+    <script defer type="text/javascript" src="ooui.js"></script>
+    <script type="text/javascript">
+        var assemblies = ["Microsoft.CSharp.dll","Mono.Security.dll","mscorlib.dll","Newtonsoft.Json.dll","Ooui.dll","Ooui.Forms.dll","System.Core.dll","System.dll","System.Numerics.dll","System.Runtime.Serialization.dll","System.Xml.dll","System.Xml.Linq.dll","Xamarin.Forms.Core.dll","Xamarin.Forms.Platform.dll","Xamarin.Forms.Xaml.dll","XamlEdit.dll"];
+        document.addEventListener("DOMContentLoaded", function(event) {
+            oouiWasm("XamlEdit", "XamlEdit", "Program", "Main", assemblies);
+        });
+    </script>
+    <script defer type="text/javascript" src="mono.js"></script>
+    <script>
+        
+        var cm = CodeMirror.fromTextArea(document.getElementById("codigo"), {
+            lineNumbers: true,
+            mode: "xml",
+            theme : "monokai"
+        });
+
+        cm.setSize(600,600);
+
+        function salvarCodigo(){
+            $("#⦙8").show();
+            $("#codigo").hide();
+            $("#save").hide();
+            $("#btcodigo").show();
+            $(".CodeMirror").hide();
+            cm.save();
+            $("#⦙8").val($("#codigo").val());
+            
+        }
+
+        function abreCodigo(){
+            $("#⦙8").hide();
+            //$("#codigo").show();
+            $("#save").show();
+            $("#btcodigo").hide();
+            $(".CodeMirror").show();
+        }
+
+        $(document).ready(function(){
+            $("#⦙8").show();
+            $("#codigo").hide();
+            $("#save").hide();
+            $("#btcodigo").show();
+            $(".CodeMirror").hide();
+            //$("#⦙8").val("okkkkk");
+            //$("#codigo").val("ok");
+            //alert("ok");
+        });
+    </script>
+</body>
+</html>
