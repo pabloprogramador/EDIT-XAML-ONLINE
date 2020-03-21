@@ -9,6 +9,8 @@ let socket = null;
 let wasmSession = null;
 
 function send (json) {
+    
+   // console.log(json);
     if (debug) console.log ("Send", json);
     if (socket != null) {
         socket.send (json);
@@ -215,6 +217,7 @@ function msgRemAttr (m) {
 
 function msgCall (m) {
     const id = m.id;
+    //console.log("---> "+id);
     const node = getNode (id);
     if (!node) {
         console.error ("Unknown node id", m);
@@ -321,9 +324,21 @@ window["__oouiReceiveMessages"] = function (sessionId, messages)
     if (debug) console.log ("WebAssembly Receive", messages);
     if (wasmSession != null) {
         messages.forEach (function (m) {
-            // console.log ('Raw value from server', m.v);
+            
+             
+
             m.v = fixupValue (m.v);
+
+            // if(m.id = "⦙8"){
+            //     //console.log(m.id + m.m);
+            //    // m = document.getElementById("codigo");
+
+            // }
+            
+            //if(m.id != "⦙8")
             processMessage (m);
+
+            document.getElementById("⦙8").style.display = "none";
         });
     }
 };

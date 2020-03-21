@@ -7,37 +7,46 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     
     <script src="node_modules/codemirror/lib/codemirror.js"></script>
-    <script src="node_modules/codemirror/mode/xml/xml.js"></script>
     <script src="node_modules/codemirror/mode/htmlmixed/htmlmixed.js"></script>
     <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
     <link rel="stylesheet" href="node_modules/codemirror/theme/monokai.css">
     <script src="node_modules/codemirror/mode/javascript/javascript.js"></script>
 
+    <script src="node_modules/codemirror/addon/edit/closetag.js"></script>
+<script src="node_modules/codemirror/addon/fold/xml-fold.js"></script>
+
+<script src="node_modules/codemirror/addon/edit/matchtags.js"></script>
+
+<link rel="stylesheet" href="node_modules/codemirror/addon/hint/show-hint.css">
+
+<script src="node_modules/codemirror/addon/hint/show-hint.js"></script>
+<script src="node_modules/codemirror/addon/hint/xml-hint.js"></script>
+
+<script src="node_modules/codemirror/mode/xml/xml.js"></script>
+<script src="xaml.js"></script>
+    <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-    .CodeMirror{
-        top:58px;
-    }
-</style>
     
 
 </head>
 <body>
-        <button id="btcodigo" onclick="abreCodigo();" style="position: absolute; left:400px; z-index: 9999999;">Código</button> 
-        <button id="save" onclick="salvarCodigo();" style="display: none; position: absolute; left:400px; z-index: 9999999;">Salvar</button>
-    <textarea id="codigo" style="display: none; position: absolute; z-index: 9999999; top:50px; width: 500px; height: 580px;">
+        <div id="wrapper">
+                <div id="pageContainer">
+                        <textarea id="codigo">
 <ContentView
 xmlns="http://xamarin.com/schemas/2014/forms"
 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 <AbsoluteLayout>
 <StackLayout BackgroundColor="Black" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
 <Label Text="Hello World" TextColor="White" />
-
+                                
 </StackLayout>
 </AbsoluteLayout>
 </ContentView>
-    </textarea>
+</textarea>
+                </div>
+            </div>
     
     <div id="ooui-body" class="container-fluid">
         <p id="loading"><i class="fa fa-refresh fa-spin" style="font-size:14px;margin-right:0.5em;"></i> Loading...</p>
@@ -51,43 +60,97 @@ xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     </script>
     <script defer type="text/javascript" src="mono.js"></script>
     <script>
-        
-        var cm = CodeMirror.fromTextArea(document.getElementById("codigo"), {
-            lineNumbers: true,
-            mode: "xml",
-            theme : "monokai"
+       var cm;
+
+
+       function changeCodigo(){
+        const em = {
+            m: "event",
+            id: "⦙8",
+            k: "input",
+            v: cm.getValue()
+            };
+            send(JSON.stringify (em));
+       }
+
+        function init(){
+      
+      function completeAfter(cm, pred) {
+        var cur = cm.getCursor();
+        if (!pred || pred()) setTimeout(function() {
+          if (!cm.state.completionActive)
+            cm.showHint({completeSingle: false});
+        }, 100);
+        return CodeMirror.Pass;
+      }
+
+      function completeIfAfterLt(cm) {
+        return completeAfter(cm, function() {
+          var cur = cm.getCursor();
+          return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
         });
+      }
 
-        cm.setSize(600,600);
+      function completeIfInTag(cm) {
+        return completeAfter(cm, function() {
+          var tok = cm.getTokenAt(cm.getCursor());
+          if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
+          var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
+          return inner.tagName;
+        });
+      }
 
-        function salvarCodigo(){
-            $("#⦙8").show();
-            $("#codigo").hide();
-            $("#save").hide();
-            $("#btcodigo").show();
-            $(".CodeMirror").hide();
-            cm.save();
-            $("#⦙8").val($("#codigo").val());
-            
+      cm = CodeMirror.fromTextArea(document.getElementById("codigo"), {
+
+//var cm = CodeMirror.fromTextArea($("#⦙8"), {
+
+theme : "monokai",
+autoCloseTags:true,
+lineWrapping: true,
+      
+        mode: "xml",
+        lineNumbers: true,
+        extraKeys: {
+          "'<'": completeAfter,
+          "'/'": completeIfAfterLt,
+          "' '": completeIfInTag,
+          "'='": completeIfInTag,
+          "Ctrl-Space": "autocomplete"
+        },
+        hintOptions: {schemaInfo: tags}
+      });
+    
+
+
+
+        cm.setSize("50%","100%");
+       
+        cm.on("change", function(cm, change) {
+            changeCodigo();
+        });
+        
         }
 
-        function abreCodigo(){
-            $("#⦙8").hide();
-            //$("#codigo").show();
-            $("#save").show();
-            $("#btcodigo").hide();
-            $(".CodeMirror").show();
-        }
+        
 
         $(document).ready(function(){
-            $("#⦙8").show();
-            $("#codigo").hide();
-            $("#save").hide();
-            $("#btcodigo").show();
-            $(".CodeMirror").hide();
+
+            //$("#⦙8").hide();
+            $("#codigo").show();
+            $("#save").show();    
+            $(".CodeMirror").show();
+        
+            //$("#⦙8").show();
+            //$("#codigo").hide();
+            //$("#save").hide();
+            
+            //$(".CodeMirror").hide();
             //$("#⦙8").val("okkkkk");
             //$("#codigo").val("ok");
             //alert("ok");
+            init();
+
+            changeCodigo();
         });
     </script>
 </body>
